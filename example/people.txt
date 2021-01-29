@@ -1,0 +1,7 @@
+paul 24
+marie 40
+jean 23
+billy 68
+raoul 50
+john 88
+karl 45
