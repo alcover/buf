@@ -61,9 +61,9 @@ bool add_post (char* user, char* text)
 
 ## Quick sample
 
-The *example/* folder shows a simple pager.  
-It reads lines from `people.txt` and fills an output 'page' of limited size.  
-When a page cannot accept more lines, it is sent.  
+The *example* folder shows a simple pager.  
+It reads lines from a file and fills an output 'page' of limited size.  
+When the page cannot accept more lines, it is sent.  
 
 Run `make && cd example && ./pager`
 
@@ -83,7 +83,11 @@ buf_append (msg, "My name is %s", name);
 puts (msg);
 </pre>
 
-  $ gcc app.c buf.o -o app
+$ `gcc app.c buf.o -o app`
+
+## Build
+
+$ `make && make check`
 
 ## Goals
 
