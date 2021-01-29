@@ -9,7 +9,7 @@ You're making a forum engine.
 A `page` is a fixed-size buffer.  
 You fill it with posts from the DB.  
 
-###The Classical way :
+### The Classical way :
 
 <pre>
 #define PAGE_SIZE 1024
