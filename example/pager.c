@@ -1,3 +1,11 @@
+/*
+    Example Buf usage.
+
+    We read lines from a file, format them and fill a page with them.
+    When the page can't accept more lines, we send it 
+    and begin filling a new page.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
