@@ -3,7 +3,7 @@ Experimental C buffer library.
 
 ## Why ?
 
-Because strings in C are painful and unsafe :  
+Because C strings are painful and unsafe :  
 
 You're making a forum engine.  
 A `page` is a fixed-size buffer.  
@@ -80,7 +80,7 @@ Buf msg = buf_new(32);
 buf_append (msg, "Hello! ");
 buf_append (msg, "My name is %s", name);
 
-puts (msg);
+puts (buf_getdata(msg));
 </pre>
 
 $ `gcc app.c buf.o -o app`
