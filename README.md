@@ -11,7 +11,7 @@ You fill it with posts from the DB.
 
 ### The Classical way :
 
-<pre>
+```C
 #define PAGE_SIZE 1024
 
 // your bet !
@@ -44,11 +44,11 @@ bool add_post (char* user, char* text)
         return false;
     } 
 }
-</pre>
+```
 
 ### The **Buf** way :
 
-<pre>
+```C
 #define PAGE_SIZE 1024
 
 Buf page = buf_new(PAGE_SIZE);
@@ -57,7 +57,7 @@ bool add_post (char* user, char* text)
 {
     return buf_append (page, "user %s said %s\n", user, text);
 }
-</pre>
+```
 
 ## Quick sample
 

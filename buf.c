@@ -167,7 +167,6 @@ int buf_write (Buf buf, const char* fmt, ...)
 }
 
 
-
 /* Accessors */
 size_t buf_getcap (const Buf buf) { return buf->cap; }
 size_t buf_getlen (const Buf buf) { return buf->len; }
