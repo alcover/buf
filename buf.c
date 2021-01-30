@@ -86,6 +86,44 @@ int buf_append (Buf buf, const char* fmt, ...)
 }
 
 
+/*
+    Writes formatted string at beginning.
+    If the string's length exceeds capacity, nothing is written.
+    Returns: new length or zero.
+*/
+int buf_write (Buf buf, const char* fmt, ...)
+{
+    if (!fmt) return 0;
+
+    const size_t cap = buf->cap;
+
+    if (!cap) return 0;
+
+    va_list args;
+    va_start(args, fmt);
+    const int len = vsnprintf (buf->data, 0, fmt, args);
+    va_end(args);
+    // printf("%d\n",len);
+
+    // Would truncate
+    if (len > cap) return 0;
+
+    va_start(args, fmt); // ?
+    const int written = vsnprintf (buf->data, cap+1, fmt, args);
+    va_end(args);
+    
+    // Error 
+    if (written < 0) {
+        fprintf (stderr, "buf_write");
+        return 0;
+    }
+
+    buf->len = written;
+
+    return written;
+}
+
+
 // todo: faster w/o calling new()
 Buf buf_copy (const Buf buf)
 {
@@ -127,43 +165,6 @@ Buf buf_resize (Buf buf, const size_t newcap)
     }
     
     return buf;
-}
-
-/*
-    Writes formatted string at beginning.
-    If the string's length exceeds capacity, nothing is written.
-    Returns: new length or zero.
-*/
-int buf_write (Buf buf, const char* fmt, ...)
-{
-    if (!fmt) return 0;
-
-    const size_t cap = buf->cap;
-
-    if (!cap) return 0;
-
-    va_list args;
-    va_start(args, fmt);
-    const int len = vsnprintf (buf->data, 0, fmt, args);
-    va_end(args);
-    // printf("%d\n",len);
-
-    // Would truncate
-    if (len > cap) return 0;
-
-    va_start(args, fmt); // ?
-    const int written = vsnprintf (buf->data, cap+1, fmt, args);
-    va_end(args);
-    
-    // Error 
-    if (written < 0) {
-        fprintf (stderr, "buf_write");
-        return 0;
-    }
-
-    buf->len = written;
-
-    return written;
 }
 
 

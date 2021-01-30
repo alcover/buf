@@ -3,45 +3,49 @@ Experimental C buffer library.
 
 ## Why ?
 
-Because C strings are painful and unsafe :  
+Because C strings are painful and unsafe.    
 
-You're making a forum engine.  
-A `page` is a fixed-size buffer.  
-You fill it with posts from the DB.  
+Say you're making a forum engine  
+where a 'page' is a fixed-size buffer that you fill with posts.  
 
-### The Classical way :
+How would you do ?
+
+### The hard way :
 
 ```C
-#define PAGE_SIZE 1024
+char page[PAGE_SZ];
 
-// your bet !
-#define POST_SIZE 100
-
-char page[PAGE_SIZE];
-
-// keep track !
+// Keep track !
 size_t page_len = 0;
 
-bool add_post (char* user, char* text) 
-{
-    // too bad if not big enough !
+while(1) {
+
+	char* user = db_col("user");
+	char* text = db_col("text");
+
+    // Big enough ?
+	#define POST_SIZE 100
+
+    // Better malloc() + realloc() ?
     char post[POST_SIZE];  
 
     // may be truncated !
-    vsnprintf (post, POST_SIZE, "user %s said %s\n", user, text);
+    snprintf (post, POST_SIZE, "<post><b>%s</b><p>%s</p></post>", user, text);
 
-    // 10000th time you type such a line...
+    // You type "strlen()" 100 times a day..
     const size_t post_len = strlen(post);
 
-    // check if it fits !
-    // what about terminating null ? Will it fit ?
-    if (page_len + post_len < PAGE_SIZE) {    
-        strcat (page, post); 
-        // keep track !
+    // Check if it fits !
+    // What about terminating null ? Will it fit ?
+    if (page_len + post_len < PAGE_SZ) {    
+        
+    	// Not sure..
+        strncat (page, post, PAGE_SZ-page_len); 
+        // ..about all this.
         page_len += post_len;
-        return true;
+
     } else {
-        return false;
+        break;
     } 
 }
 ```
@@ -49,13 +53,16 @@ bool add_post (char* user, char* text)
 ### The **Buf** way :
 
 ```C
-#define PAGE_SIZE 1024
+Buf page = buf_new(PAGE_SZ);
 
-Buf page = buf_new(PAGE_SIZE);
+while(1) {
 
-bool add_post (char* user, char* text) 
-{
-    return buf_append (page, "user %s said %s\n", user, text);
+	char* user = db_col("user");
+	char* text = db_col("text");
+
+	if (buf_append (page, "user %s said %s\n", user, text)) {
+		continue;
+	}
 }
 ```
 

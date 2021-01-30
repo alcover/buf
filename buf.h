@@ -12,7 +12,7 @@ Buf buf_new (const size_t cap);
 int buf_append (Buf buf, const char* fmt, ...);
 
 /*
-    Writes string at beginning.
+    Write string at the beginning of buf.
     If the string's length exceeds capacity, nothing is written.
     Returns: new length or zero.
 */
