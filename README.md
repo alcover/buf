@@ -10,7 +10,7 @@ where a 'page' is a fixed-size buffer that you fill with posts.
 
 How would you do ?
 
-### The hard way :
+### The hard way
 
 ```C
 char page[PAGE_SZ];
@@ -50,7 +50,7 @@ while(1) {
 }
 ```
 
-### The **Buf** way :
+### The **Buf** way
 
 ```C
 Buf page = buf_new(PAGE_SZ);
@@ -65,6 +65,36 @@ while(1) {
     }
 }
 ```
+
+# API
+
+### buf_new
+`Buf buf_new (const size_t cap);`
+
+### buf_append
+Append a string to `buf`, using printf() syntax.  
+Returns: increase in length or zero if error or insufficient space.  
+
+`int buf_append (Buf buf, const char* fmt, ...);`
+
+### buf_write
+Write string at the beginning of buf.
+If the string's length exceeds capacity, nothing is written.  
+Returns: new length or zero.
+
+`int buf_write (Buf buf, const char* fmt, ...);`
+
+Buf buf_copy (const Buf buf);
+Buf buf_resize (Buf buf, const size_t newcap);
+void buf_reset (Buf buf);
+
+### Accessors
+current length  
+`size_t buf_getlen (const Buf buf);`
+capacity  
+`size_t buf_getcap (const Buf buf);`  
+C string data  
+`const char* buf_getdata (const Buf buf);`
 
 ## Quick sample
 
