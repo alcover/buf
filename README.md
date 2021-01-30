@@ -30,7 +30,7 @@ while(1) {
     char post[POST_SIZE];  
 
     // may be truncated !
-    snprintf (post, POST_SIZE, "<post><b>%s</b><p>%s</p></post>", user, text);
+    snprintf (post, POST_SIZE, "<post>%s<p>%s</p></post>", user, text);
 
     // You type "strlen()" 100 times a day..
     const size_t post_len = strlen(post);
@@ -60,7 +60,7 @@ while(1) {
     char* user = db_col("user");
     char* text = db_col("text");
 
-    if (buf_append (page, "user %s said %s\n", user, text)) {
+    if (buf_append (page, "<post>%s<p>%s</p></post>", user, text)) {
         continue;
     }
 }
