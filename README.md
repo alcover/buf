@@ -20,11 +20,11 @@ size_t page_len = 0;
 
 while(1) {
 
-	char* user = db_col("user");
-	char* text = db_col("text");
+    char* user = db_col("user");
+    char* text = db_col("text");
 
     // Big enough ?
-	#define POST_SIZE 100
+    #define POST_SIZE 100
 
     // Better malloc() + realloc() ?
     char post[POST_SIZE];  
@@ -39,7 +39,7 @@ while(1) {
     // What about terminating null ? Will it fit ?
     if (page_len + post_len < PAGE_SZ) {    
         
-    	// Not sure..
+        // Not sure..
         strncat (page, post, PAGE_SZ-page_len); 
         // ..about all this.
         page_len += post_len;
@@ -57,12 +57,12 @@ Buf page = buf_new(PAGE_SZ);
 
 while(1) {
 
-	char* user = db_col("user");
-	char* text = db_col("text");
+    char* user = db_col("user");
+    char* text = db_col("text");
 
-	if (buf_append (page, "user %s said %s\n", user, text)) {
-		continue;
-	}
+    if (buf_append (page, "user %s said %s\n", user, text)) {
+        continue;
+    }
 }
 ```
 
