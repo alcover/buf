@@ -1,14 +1,14 @@
 # Buf
-Experimental C buffer library.  
+Experimental string buffer library.  
 
 ## Why ?
 
-Because C strings are painful and unsafe.    
+Because C strings can be painful, unsafe and slow.    
 
 Say you're making a forum engine  
 where a 'page' is a fixed-size buffer that you fill with posts.  
 
-How would you do ?
+How would you safely build a page without truncating posts ?
 
 ### The hard way
 
@@ -26,19 +26,18 @@ while(1) {
     // Big enough ?
     #define POST_SIZE 100
 
-    // Better malloc() + realloc() ?
+    // Better malloc and realloc ?
     char post[POST_SIZE];  
 
-    // may be truncated !
-    snprintf (post, POST_SIZE, "<post>%s<p>%s</p></post>", user, text);
+    // May be truncated !
+    snprintf (post, POST_SIZE, "<div>%s<p>%s</p></div>", user, text);
 
-    // You type "strlen()" 100 times a day..
+    // Typing "strlen()" 100 times a day..
     const size_t post_len = strlen(post);
 
     // Check if it fits !
     // What about terminating null ? Will it fit ?
     if (page_len + post_len < PAGE_SZ) {    
-        
         // Not sure..
         strncat (page, post, PAGE_SZ-page_len); 
         // ..about all this.
@@ -60,8 +59,8 @@ while(1) {
     char* user = db_col("user");
     char* text = db_col("text");
 
-    if (buf_append (page, "<post>%s<p>%s</p></post>", user, text)) {
-        continue;
+    if (!buf_append (page, "<div>%s<p>%s</p></div>", user, text)) {
+        break;
     }
 }
 ```

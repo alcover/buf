@@ -20,11 +20,11 @@ check:
 example/pager: example/pager.c $(out)
 	$(LINK)
 
-README.html: README.md
-	@markdown $< > $@
-
 test: test.c $(out)
 	$(LINK)
+
+README.html: README.md
+	@markdown $< > $@
 
 clean:
 	@ rm -f $(all)

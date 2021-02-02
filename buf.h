@@ -1,29 +1,43 @@
 #pragma once
-#include <string.h>
 
+#include <string.h>
+#include <stdbool.h>
+
+/* Underlying struct :
+{
+    uint32_t cap;       	// capacity
+    uint32_t len;       	// current length
+    unsigned char data[];   // null-terminated
+}
+
+Total memory size for n-bytes capacity : 8+n+1
+*/
+
+// Opaque pointer to struct
 typedef struct Buf_s *Buf;
 
 Buf buf_new (const size_t cap);
 
-/*
-    Append a string to `buf`, using printf() syntax.
-    Returns: increase in length or zero if error or insufficient space.
-*/
+// Append a formatted c-string to `buf`.
+// If new data would exceed capacity, `buf` stays unmodified.
+// Returns: change in length.
 int buf_append (Buf buf, const char* fmt, ...);
 
-/*
-    Write string at the beginning of buf.
-    If the string's length exceeds capacity, nothing is written.
-    Returns: new length or zero.
-*/
+// Write a formatted c-string at beginning of `buf`.
+// If new data would exceed capacity, `buf` stays unmodified.
+// Returns: new length or zero on failure.
 int buf_write (Buf buf, const char* fmt, ...);
 
-Buf buf_copy (const Buf buf);
+bool buf_equal (const Buf a, const Buf b);
+Buf buf_dup (const Buf buf);
 Buf buf_resize (Buf buf, const size_t newcap);
 void buf_reset (Buf buf);
-void buf_print (const Buf buf);
 
 // Accessors
-size_t buf_getcap (const Buf buf);
-size_t buf_getlen (const Buf buf);
-const char* buf_getdata (const Buf buf);
+size_t buf_cap (const Buf buf);
+size_t buf_len (const Buf buf);
+const char* buf_data (const Buf buf);
+
+// Utility. 
+// Prints buf state : "Buf len/cap 'data'"
+void buf_print (const Buf buf);

@@ -11,6 +11,7 @@
 #include <assert.h>
 #include <errno.h>
 #include <stdarg.h>
+// #include <stdbool.h>
 
 #define LOG(s) do{ printf("%s\n", s); fflush(stdout);} while(0)
 
@@ -46,35 +47,43 @@ Buf buf_new (const size_t cap)
 }
 
 /*
-    In-place append a string to Buffer `buf`, using printf() syntax.
-    If not enough space, buf length stays unmodified and zero is returned.
-    Ex: buf_append (buf, "Hello");
-        buf_append (buf, "%s is %d years old", "John", 40);
-    Returns: increase in length or zero if error or insufficient space.
+    Append a formatted c-string to `buf`.
+    If new data would exceed capacity, `buf` stays unmodified.
+    Returns: change in length.
+    Ex: buf_append (buf, str);
+        buf_append (buf, "Hello");
+        buf_append (buf, "%s has %d apples", "Mary", 10);
 */
 int buf_append (Buf buf, const char* fmt, ...)
 {
     if (!fmt) return 0;
 
     const size_t spc = buf->cap - buf->len;
-
+    
     if (!spc) return 0;
+
+    // get potential write length
+    va_list args;
+    va_start(args, fmt);
+    const int len = vsnprintf (NULL, 0, fmt, args); //rem: end null not counted
+    va_end(args);
+
+    if (len > spc) return 0;
 
     char* end = buf->data + buf->len;
 
-    va_list args;
+    errno = 0;
     va_start(args, fmt);
     int written = vsnprintf (end, spc+1, fmt, args);
     va_end(args);
-    
-    // Error 
+     
     if (written < 0) {
-        fprintf (stderr, "buf_append");
-        *end = 0; 
+        perror("buf_append");
+        *end = 0; // just in case..
         return 0;
     }
 
-    // Would truncate
+    // truncated - useless?
     if (written > spc) {
         *end = 0; 
         return 0;
@@ -87,9 +96,9 @@ int buf_append (Buf buf, const char* fmt, ...)
 
 
 /*
-    Writes formatted string at beginning.
-    If the string's length exceeds capacity, nothing is written.
-    Returns: new length or zero.
+    Write a formatted c-string at beginning of `buf`.
+    If new data would exceed capacity, `buf` stays unmodified.
+    Returns: new length or zero on failure.
 */
 int buf_write (Buf buf, const char* fmt, ...)
 {
@@ -99,22 +108,21 @@ int buf_write (Buf buf, const char* fmt, ...)
 
     if (!cap) return 0;
 
+    // get potential write length
     va_list args;
     va_start(args, fmt);
-    const int len = vsnprintf (buf->data, 0, fmt, args);
+    const int len = vsnprintf (NULL, 0, fmt, args);
     va_end(args);
-    // printf("%d\n",len);
 
-    // Would truncate
     if (len > cap) return 0;
 
-    va_start(args, fmt); // ?
+    errno = 0;
+    va_start(args, fmt); 
     const int written = vsnprintf (buf->data, cap+1, fmt, args);
     va_end(args);
     
-    // Error 
     if (written < 0) {
-        fprintf (stderr, "buf_write");
+        perror("buf_write");
         return 0;
     }
 
@@ -124,8 +132,21 @@ int buf_write (Buf buf, const char* fmt, ...)
 }
 
 
+bool buf_equal (const Buf a, const Buf b) 
+{
+    if (!a && !b) return true; //?
+    if (!a || !b) return false; //?
+
+    const size_t lena = a->len;
+    const size_t lenb = b->len;
+
+    if (lena != lenb) return false;
+
+    return !memcmp (a->data, b->data, lena);
+}
+
 // todo: faster w/o calling new()
-Buf buf_copy (const Buf buf)
+Buf buf_dup (const Buf buf)
 {
     Buf ret = buf_new(buf->cap);
 
@@ -169,9 +190,9 @@ Buf buf_resize (Buf buf, const size_t newcap)
 
 
 /* Accessors */
-size_t buf_getcap (const Buf buf) { return buf->cap; }
-size_t buf_getlen (const Buf buf) { return buf->len; }
-const char* buf_getdata (const Buf buf) { return buf->data; }
+size_t buf_cap (const Buf buf) { return buf->cap; }
+size_t buf_len (const Buf buf) { return buf->len; }
+const char* buf_data (const Buf buf) { return buf->data; }
 
 
 void buf_reset (Buf buf)
@@ -183,5 +204,5 @@ void buf_reset (Buf buf)
 // debugging utility
 void buf_print (const Buf buf)
 {
-    printf ("Buf %d/%d '%s'\n", buf_getlen(buf), buf_getcap(buf), buf_getdata(buf));
+    printf ("Buf %d/%d '%s'\n", buf_len(buf), buf_cap(buf), buf_data(buf));
 }

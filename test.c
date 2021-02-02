@@ -38,7 +38,7 @@ int main() {
     //         break;
     //     } 
     // }
-    // LOG(page);
+    // LOG (buf_data(page));
 
 
 
@@ -51,9 +51,11 @@ int main() {
         char* user = "user";
         char* text = "text";
 
-        if (buf_append (page2, "<post>%s<p>%s</p></post>", user, text)) {
-            continue;
+        if (! buf_append (page2, "<post>%s<p>%s</p></post>", user, text)) {
+            break;
         }
     }
-    LOG(page2);
+
+    // buf_print(page2);
+    LOG (buf_data(page2));
 }

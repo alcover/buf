@@ -18,17 +18,17 @@ int main()
 {
     const char* foo = "foo";
     const char* bar = "bar";
-    const char* big = "loooooooooooooooong";
+    const char* big = "bigbigbigbigbigbigbigbig";
     const int i = 1;
     const size_t cap = 10;
-    Buf buf;
+    Buf buf, a, b;
     char cat[100];
     int rc;
 
     #define check(buf, cap, data) do { \
-        assert (buf_getcap(buf) == cap); \
-        assert (buf_getlen(buf) == strlen(data)); \
-        assert (!strcmp(buf_getdata(buf), data)); \
+        assert (buf_cap(buf) == cap); \
+        assert (buf_len(buf) == strlen(data)); \
+        assert (!strcmp(buf_data(buf), data)); \
     } while(0)
 
     /**** init ****/    
@@ -65,7 +65,7 @@ int main()
     buf = buf_new (strlen(big)-1);
     rc = buf_append (buf, big);
     assert (rc == 0);
-    assert (buf_getlen(buf) == 0);
+    assert (buf_len(buf) == 0);
     
     /**** write ****/
 
@@ -89,11 +89,11 @@ int main()
     buf_write (buf, big);
     check (buf, cap, foo);
 
-    /**** copy ****/
+    /**** dup ****/
 
     buf = buf_new(cap);
     buf_append (buf, foo);
-    Buf cpy = buf_copy(buf);
+    Buf cpy = buf_dup(buf);
     check (cpy, cap, foo);
 
     /**** resize ****/
@@ -106,6 +106,14 @@ int main()
     buf_append (buf, big);
     sprintf (cat, "%s%s", foo, big);
     check (buf, needsz, cat);
+
+    /**** equal ****/
+
+    a = buf_new(cap);
+    b = buf_new(cap);
+    buf_append (a, foo);
+    buf_append (b, foo);
+    assert (buf_equal(a,b));
 
 
     printf ("buf tests OK\n");

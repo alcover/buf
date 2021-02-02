@@ -21,7 +21,7 @@ int pagenum = 1;
 void send(Buf page) 
 { 
 	printf ("page %d [%d/%d]\n%s\n", 
-		pagenum++, buf_getlen(page), PAGE_SIZE, buf_getdata(page)); 
+		pagenum++, buf_len(page), PAGE_SIZE, buf_data(page)); 
 }
 
 int main()
@@ -42,17 +42,16 @@ int main()
     	sscanf (line, "%s" "%d", name, &age);
 
         if (! buf_append (page, RECORD_FMT, name, age)) {
-        	// record won't fit.
-        	// so flush page 
+        	// record won't fit, so flush page 
         	send(page);
+        	// and re-add record.
         	buf_reset(page);
-        	// then re-add record.
         	buf_append (page, RECORD_FMT, name, age);
         }
     }
 
 	// page not empty, send it.
-	if (buf_getlen(page)) send(page);
+	if (buf_len(page)) send(page);
 	
 	return 0;
 }
