@@ -107,7 +107,7 @@ Change capacity. If lowered below length, data will be truncated.
 
 `bool buf_resize (Buf* pbuf, const size_t newcap);`
 
-###buf_reset
+### buf_reset
 Set data length to zero.  
 `void buf_reset (Buf buf);`
 
