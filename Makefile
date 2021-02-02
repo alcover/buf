@@ -20,9 +20,6 @@ check:
 example/forum: example/forum.c $(out)
 	$(LINK)
 
-test: test.c $(out)
-	$(LINK)
-
 README.html: README.md
 	@markdown $< > $@
 

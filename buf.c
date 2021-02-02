@@ -7,11 +7,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdarg.h>
 #include <string.h>
 #include <assert.h>
 #include <errno.h>
-#include <stdarg.h>
-// #include <stdbool.h>
 
 #define LOG(s) do{ printf("%s\n", s); fflush(stdout);} while(0)
 
@@ -22,6 +21,7 @@ typedef struct Buf_s {
     uint32_t len;       // current length
     unsigned char data[];   // null-terminated string
 } Buf_s;
+
 
 // mem size of a Buffer with capacity cap
 // header + data + sentinel 

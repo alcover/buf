@@ -105,7 +105,7 @@ To release a *Buf*, simply
 
 ### buf_append
 Append a formatted c-string to *buf*.  
-If new data would exceed capacity, `buf` stays unmodified.  
+If new data would exceed capacity, *buf* stays unmodified.  
 Returns: change in length, or zero on failure. 
 
 `int buf_append (Buf buf, const char* fmt, ...);`
