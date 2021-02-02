@@ -88,11 +88,11 @@ And you still get a normal C-string through the *buf_data()* accessor.
 
 ## Quick sample
 
-The *example* folder implements such a forum.  
-It reads rows from a mock db, formats and appends them to a 'page' of limited size.  
-When the page cannot accept more posts, we 'send' it and begin filling a new page.  
+The *example* folder implements the 'forum'.  
+It reads rows from a mock db, and renders them to a page of limited size.  
+When the page cannot accept more posts, we send it and begin filling a new page.  
 
-Run `make && cd example && ./forum`
+`make && cd example && ./forum`
 
 # API
 
