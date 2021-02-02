@@ -16,6 +16,7 @@ Total memory size for n-bytes capacity : 8+n+1
 // Opaque pointer to struct
 typedef struct Buf_s *Buf;
 
+// Allocate a fresh Buf of capacity cap
 Buf buf_new (const size_t cap);
 
 // Append a formatted c-string to `buf`.
@@ -28,9 +29,16 @@ int buf_append (Buf buf, const char* fmt, ...);
 // Returns: new length, or zero on failure.
 int buf_write (Buf buf, const char* fmt, ...);
 
+// Compare a and b's data strings.
 bool buf_equal (const Buf a, const Buf b);
+
+// Clone a Buf.
 Buf buf_dup (const Buf buf);
+
+// Change capacity through realloc()
 bool buf_resize (Buf* pbuf, const size_t newcap);
+
+// Set data length to zero. 
 void buf_reset (Buf buf);
 
 // Accessors

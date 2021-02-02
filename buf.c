@@ -158,6 +158,7 @@ Buf buf_dup (const Buf buf)
     return ret;
 }
 
+
 bool buf_resize (Buf* pbuf, const size_t newcap)
 {
     Buf buf = *pbuf;
