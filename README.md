@@ -1,3 +1,5 @@
+![block](assets/block.png)
+
 # Buf
 Experimental string buffer library.  
 
