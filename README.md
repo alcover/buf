@@ -5,10 +5,10 @@ Experimental string buffer library.
 
 ## Why ?
 
-Because C strings can be painful, unsafe and slow.    
+Because C strings are painful, unsafe and slow.    
 
-Say you're making a forum engine  
-where a 'page' is a fixed-size buffer that you fill with posts.  
+Say you're making a forum engine,  
+where a *page* is a fixed-size buffer that you fill with posts.  
 
 How would you safely build a page without truncating posts ?
 
@@ -69,7 +69,7 @@ while(1) {
 ## Principle
 
 The *Buf* type is an opaque pointer to a struct.  
-This struct ends with a flexible char array :  
+This struct ends with a flexible array :  
 
 ```C
 struct Buf_s *Buf;
@@ -81,8 +81,8 @@ struct Buf_s {
 }
 ```
 
-Thus a *Buf* represents a contiguous chunk of memory.  
-And you still get a normal C-string through the *buf_data()* accessor.
+Making *\*Buf* a contiguous chunk of memory.  
+And you still get your good old C-string through the *buf_data()* accessor.
 
 ![schema](assets/schema.png)
 
@@ -90,20 +90,16 @@ And you still get a normal C-string through the *buf_data()* accessor.
 
 The *example* folder implements the 'forum'.  
 It reads rows from a mock db, and renders them to a page of limited size.  
-When the page cannot accept more posts, we send it and begin filling a new page.  
+When the next post won't fit, we flush the page and start anew.  
 
 `make && cd example && ./forum`
 
 # API
 
 ### buf_new
+`Buf buf_new (const size_t cap);`  
 Allocate a fresh *Buf* of capacity *cap*
-
-`Buf buf_new (const size_t cap);`
-
-To release a *Buf*, simply
-
-`free(buf);`
+To release, simply `free(buf);`
 
 ### buf_append
 Append a formatted c-string to *buf*.  
