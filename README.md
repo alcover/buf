@@ -80,9 +80,9 @@ struct Buf_s {
 ```
 
 Thus a *Buf* represents a contiguous chunk of memory.  
-And you still can get a normal C-string through the *buf_data()* accessor.
+And you still get a normal C-string through the *buf_data()* accessor.
 
-![logo](assets/schema.png)
+![schema](assets/schema.png)
 
 ## Quick sample
 
