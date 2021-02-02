@@ -75,28 +75,39 @@ Run `make && cd example && ./forum`
 # API
 
 ### buf_new
+Allocate a fresh *Buf* of capacity *cap*
+
 `Buf buf_new (const size_t cap);`
 
 ### buf_append
-Append a string to *buf*, using printf() syntax.  
-Returns: increase in length or zero if error or insufficient space.  
+Append a formatted c-string to *buf*.  
+If new data would exceed capacity, `buf` stays unmodified.  
+Returns: change in length, or zero on failure. 
 
 `int buf_append (Buf buf, const char* fmt, ...);`
 
 ### buf_write
-Write string at the beginning of buf.  
-If string length exceeds capacity, nothing is written.  
-Returns: new length or zero.
+Write a formatted c-string at start of *buf*.  
+If new data would exceed capacity, *buf* stays unmodified.  
+Returns: new length, or zero on failure.
 
 `int buf_write (Buf buf, const char* fmt, ...);`
 
-Buf buf_copy (const Buf buf);
-Buf buf_resize (Buf buf, const size_t newcap);
-void buf_reset (Buf buf);
+### buf_dup
+Make a clone.  
+`Buf buf_dup (const Buf buf);`
+
+### buf_resize
+Change capacity. If lowered, data may be truncated.  
+`Buf buf_resize (Buf buf, const size_t newcap);`
+
+###buf_reset
+Set data length to zero.  
+`void buf_reset (Buf buf);`
 
 ### Accessors
-current length  
-`size_t buf_len (const Buf buf);`  
+ 
+`size_t buf_len (const Buf buf);` current length   
 capacity  
 `size_t buf_cap (const Buf buf);`  
 C string data  

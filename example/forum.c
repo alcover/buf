@@ -13,14 +13,12 @@
 
 #include "../buf.h"
 
-#define POST_FMT "■ %s (%d points)\n%s\n"
 #define PAGE_SZ 128
-
-int pagenum = 1;
+#define POST_FMT "■ %s (%d points)\n%s\n"
 
 void send(Buf page) 
 { 
-	printf ("--- PAGE %d [%dB] ---\n\n%s\n", pagenum++, buf_len(page), buf_data(page)); 
+	printf ("--- PAGE [%d/%dB] ---\n\n%s\n", buf_len(page), PAGE_SZ, buf_data(page)); 
 }
 
 int main()

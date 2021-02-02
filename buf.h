@@ -20,12 +20,12 @@ Buf buf_new (const size_t cap);
 
 // Append a formatted c-string to `buf`.
 // If new data would exceed capacity, `buf` stays unmodified.
-// Returns: change in length.
+// Returns: change in length, or zero on failure.
 int buf_append (Buf buf, const char* fmt, ...);
 
-// Write a formatted c-string at beginning of `buf`.
+// Write a formatted c-string at start of `buf`.
 // If new data would exceed capacity, `buf` stays unmodified.
-// Returns: new length or zero on failure.
+// Returns: new length, or zero on failure.
 int buf_write (Buf buf, const char* fmt, ...);
 
 bool buf_equal (const Buf a, const Buf b);
