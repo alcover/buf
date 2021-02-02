@@ -42,7 +42,6 @@ while(1) {
         strncat (page, post, PAGE_SZ-page_len); 
         // ..about all this.
         page_len += post_len;
-
     } else {
         break;
     } 
@@ -65,13 +64,21 @@ while(1) {
 }
 ```
 
+## Quick sample
+
+The *example* folder implements such a forum.  
+It reads rows from a mock db, formats and appends them to a 'page' of limited size.  
+When the page cannot accept more posts, we 'send' it and begin filling a new page.  
+
+Run `make && cd example && ./forum`
+
 # API
 
 ### buf_new
 `Buf buf_new (const size_t cap);`
 
 ### buf_append
-Append a string to `buf`, using printf() syntax.  
+Append a string to *buf*, using printf() syntax.  
 Returns: increase in length or zero if error or insufficient space.  
 
 `int buf_append (Buf buf, const char* fmt, ...);`
@@ -89,19 +96,11 @@ void buf_reset (Buf buf);
 
 ### Accessors
 current length  
-`size_t buf_len (const Buf buf);`
+`size_t buf_len (const Buf buf);`  
 capacity  
 `size_t buf_cap (const Buf buf);`  
 C string data  
 `const char* buf_data (const Buf buf);`
-
-## Quick sample
-
-The *example* folder shows a simple pager.  
-It reads lines from a file and fills an output 'page' of limited size.  
-When the page cannot accept more lines, it is sent.  
-
-Run `make && cd example && ./pager`
 
 ## Usage
 
@@ -124,12 +123,6 @@ puts (buf_data(msg));
 ## Build & unit-test
 
 `make && make check`
-
-## Goals
-
-* zero dependencies
-* useful & clean code
-* speed
 
 ## TODO
 * utf8 ?

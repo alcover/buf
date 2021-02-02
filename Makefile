@@ -6,7 +6,7 @@ out = buf.o
 
 .PHONY: all check clean
 
-all: $(out) unit test example/pager README.html
+all: $(out) unit test example/forum README.html
 
 $(out): buf.c buf.h
 	$(COMP)
@@ -17,7 +17,7 @@ unit: unit.c $(out)
 check:
 	@ ./unit
 
-example/pager: example/pager.c $(out)
+example/forum: example/forum.c $(out)
 	$(LINK)
 
 test: test.c $(out)
