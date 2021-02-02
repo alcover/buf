@@ -158,34 +158,29 @@ Buf buf_dup (const Buf buf)
     return ret;
 }
 
-// problem: dangling buf pointer if foo = resize(buf)
-Buf buf_resize (Buf buf, const size_t newcap)
+bool buf_resize (Buf* pbuf, const size_t newcap)
 {
-    const size_t cap = buf->cap;
-    const size_t len = buf->len;
-
-    if (newcap < cap) {
-        
-        if (newcap < len) {
-            buf->data[newcap] = 0;
-            buf->len = newcap;
-        }
-
-        buf->cap = newcap;
+    Buf buf = *pbuf;
     
-    } else if (newcap > cap) {
+    if (newcap == buf->cap) return true;
     
-        void* tmp = realloc (buf, BUF_MEM(newcap));
-        
-        if (!tmp) {
-            fprintf (stderr, "buf_resize failed\n");
-        } else {
-            buf = tmp;
-            buf->cap = newcap;
-        }
+    Buf tmp = realloc (buf, BUF_MEM(newcap));    
+
+    if (!tmp) {
+        fprintf (stderr, "buf_resize failed\n");
+        return false;
     }
     
-    return buf;
+    // truncated
+    if (newcap < buf->len) {
+        tmp->data[newcap] = 0;
+        tmp->len = newcap;
+    }
+
+    buf->cap = newcap;
+    *pbuf = buf;
+    
+    return true;
 }
 
 

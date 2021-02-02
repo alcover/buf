@@ -79,6 +79,10 @@ Allocate a fresh *Buf* of capacity *cap*
 
 `Buf buf_new (const size_t cap);`
 
+To release a *Buf*, simply
+
+`free(buf);`
+
 ### buf_append
 Append a formatted c-string to *buf*.  
 If new data would exceed capacity, `buf` stays unmodified.  
@@ -94,12 +98,14 @@ Returns: new length, or zero on failure.
 `int buf_write (Buf buf, const char* fmt, ...);`
 
 ### buf_dup
-Make a clone.  
+Make a clone.
+
 `Buf buf_dup (const Buf buf);`
 
 ### buf_resize
-Change capacity. If lowered, data may be truncated.  
-`Buf buf_resize (Buf buf, const size_t newcap);`
+Change capacity. If lowered below length, data will be truncated.  
+
+`bool buf_resize (Buf* pbuf, const size_t newcap);`
 
 ###buf_reset
 Set data length to zero.  
@@ -107,10 +113,13 @@ Set data length to zero.
 
 ### Accessors
  
-`size_t buf_len (const Buf buf);` current length   
-capacity  
-`size_t buf_cap (const Buf buf);`  
-C string data  
+Capacity  
+`size_t buf_cap (const Buf buf);` 
+
+Current length  
+`size_t buf_len (const Buf buf);` 
+
+Data string  
 `const char* buf_data (const Buf buf);`
 
 ## Usage

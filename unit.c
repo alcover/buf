@@ -102,7 +102,7 @@ int main()
     assert (needsz > cap);
     buf = buf_new(cap);
     buf_append (buf, foo);
-    buf = buf_resize (buf, needsz);
+    buf_resize (&buf, needsz);
     buf_append (buf, big);
     sprintf (cat, "%s%s", foo, big);
     check (buf, needsz, cat);

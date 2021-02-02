@@ -30,7 +30,7 @@ int buf_write (Buf buf, const char* fmt, ...);
 
 bool buf_equal (const Buf a, const Buf b);
 Buf buf_dup (const Buf buf);
-Buf buf_resize (Buf buf, const size_t newcap);
+bool buf_resize (Buf* pbuf, const size_t newcap);
 void buf_reset (Buf buf);
 
 // Accessors
