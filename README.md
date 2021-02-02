@@ -64,6 +64,26 @@ while(1) {
 }
 ```
 
+## Principle
+
+The *Buf* type is an opaque pointer to a struct.  
+This struct ends with a flexible char array :  
+
+```C
+struct Buf_s *Buf;
+
+struct Buf_s {
+    uint32_t cap;  // capacity
+    uint32_t len;  // current length
+    unsigned char data[];  // null-terminated string
+}
+```
+
+Thus a *Buf* represents a contiguous chunk of memory.  
+And you still can get a normal C-string through the *buf_data()* accessor.
+
+![logo](assets/schema.png)
+
 ## Quick sample
 
 The *example* folder implements such a forum.  
