@@ -24,13 +24,13 @@ while(1) {
     char* text = db_col("text");
 
     // Big enough ?
-    #define POST_SIZE 100
+    #define POST_SZ 100
 
     // Better malloc and realloc ?
-    char post[POST_SIZE];  
+    char post[POST_SZ];  
 
     // May be truncated !
-    snprintf (post, POST_SIZE, "<div>%s<p>%s</p></div>", user, text);
+    snprintf (post, POST_SZ, "<div>%s<p>%s</p></div>", user, text);
 
     // Typing "strlen()" 100 times a day..
     const size_t post_len = strlen(post);
@@ -49,7 +49,7 @@ while(1) {
 }
 ```
 
-### The **Buf** way
+### The Buf way
 
 ```C
 Buf page = buf_new(PAGE_SZ);
@@ -77,8 +77,8 @@ Returns: increase in length or zero if error or insufficient space.
 `int buf_append (Buf buf, const char* fmt, ...);`
 
 ### buf_write
-Write string at the beginning of buf.
-If the string's length exceeds capacity, nothing is written.  
+Write string at the beginning of buf.  
+If string length exceeds capacity, nothing is written.  
 Returns: new length or zero.
 
 `int buf_write (Buf buf, const char* fmt, ...);`
@@ -89,11 +89,11 @@ void buf_reset (Buf buf);
 
 ### Accessors
 current length  
-`size_t buf_getlen (const Buf buf);`
+`size_t buf_len (const Buf buf);`
 capacity  
-`size_t buf_getcap (const Buf buf);`  
+`size_t buf_cap (const Buf buf);`  
 C string data  
-`const char* buf_getdata (const Buf buf);`
+`const char* buf_data (const Buf buf);`
 
 ## Quick sample
 
@@ -111,19 +111,19 @@ Run `make && cd example && ./pager`
 #include "buf.h"
 
 char name[] = "Bob";
-Buf msg = buf_new(32);
+Buf msg = buf_new(100);
 
 buf_append (msg, "Hello! ");
 buf_append (msg, "My name is %s", name);
 
-puts (buf_getdata(msg));
+puts (buf_data(msg));
 </pre>
 
-$ `gcc app.c buf.o -o app`
+`gcc app.c buf.o -o app`
 
-## Build
+## Build & unit-test
 
-$ `make && make check`
+`make && make check`
 
 ## Goals
 
@@ -132,4 +132,6 @@ $ `make && make check`
 * speed
 
 ## TODO
+* utf8 ?
 * Add methods like split() ?
+* Make separate FlexBuf lib with auto-resize ?
