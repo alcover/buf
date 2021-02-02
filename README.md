@@ -98,36 +98,40 @@ When the next post won't fit, we flush the page and start anew.
 
 ### buf_new
 `Buf buf_new (const size_t cap);`  
-Allocate a fresh *Buf* of capacity *cap*
+
+Allocate a fresh *Buf* of capacity *cap*.  
 To release, simply `free(buf);`
 
 ### buf_append
+`int buf_append (Buf buf, const char* fmt, ...);`  
+
 Append a formatted c-string to *buf*.  
 If new data would exceed capacity, *buf* stays unmodified.  
 Returns: change in length, or zero on failure. 
 
-`int buf_append (Buf buf, const char* fmt, ...);`
-
 ### buf_write
+`int buf_write (Buf buf, const char* fmt, ...);`  
+
 Write a formatted c-string at start of *buf*.  
 If new data would exceed capacity, *buf* stays unmodified.  
 Returns: new length, or zero on failure.
 
-`int buf_write (Buf buf, const char* fmt, ...);`
-
 ### buf_dup
+`Buf buf_dup (const Buf buf);`  
+
 Make a clone.
 
-`Buf buf_dup (const Buf buf);`
-
 ### buf_resize
-Change capacity. If lowered below length, data will be truncated.  
+`bool buf_resize (Buf* pbuf, const size_t newcap);`  
 
-`bool buf_resize (Buf* pbuf, const size_t newcap);`
+Change capacity.  
+If lowered below length, data will be truncated.  
+
 
 ### buf_reset
+`void buf_reset (Buf buf);`  
+
 Set data length to zero.  
-`void buf_reset (Buf buf);`
 
 ### Accessors
  
