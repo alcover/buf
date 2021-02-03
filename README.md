@@ -149,15 +149,21 @@ Data string
 <pre>
 // app.c
 
+#include <stdio.h>
 #include "buf.h"
 
-char name[] = "Bob";
-Buf msg = buf_new(100);
+int main() {
 
-buf_append (msg, "Hello! ");
-buf_append (msg, "My name is %s", name);
+    char name[] = "Bob";
+    Buf msg = buf_new(100);
 
-puts (buf_data(msg));
+    buf_append (msg, "Hello! ");
+    buf_append (msg, "My name is %s", name);
+
+    puts (buf_data(msg));
+
+    return 0;
+}
 </pre>
 
 `gcc app.c buf.o -o app`
