@@ -178,8 +178,8 @@ bool buf_resize (Buf* pbuf, const size_t newcap)
         tmp->len = newcap;
     }
 
-    buf->cap = newcap;
-    *pbuf = buf;
+    tmp->cap = newcap;
+    *pbuf = tmp;
     
     return true;
 }

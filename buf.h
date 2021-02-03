@@ -47,4 +47,4 @@ size_t buf_len (const Buf buf);
 const char* buf_data (const Buf buf);
 
 // Utility to print buf state : "Buf len/cap 'data'"
-void buf_print (const Buf buf);
+void buf_print (const Buf buf); 
