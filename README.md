@@ -149,7 +149,7 @@ Data string
 <pre>
 // app.c
 
-#include <stdio.h>
+#include &lt;stdio.h&gt;
 #include "buf.h"
 
 int main() {
