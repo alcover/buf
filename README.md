@@ -162,6 +162,8 @@ int main() {
 
     puts (buf_data(msg));
 
+    //-> Hello! My name is Bob
+
     return 0;
 }
 </pre>
