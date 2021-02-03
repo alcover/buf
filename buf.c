@@ -19,7 +19,7 @@
 typedef struct Buf_s {
     uint32_t cap;       // capacity
     uint32_t len;       // current length
-    unsigned char data[];   // null-terminated string
+    char data[];   // null-terminated string
 } Buf_s;
 
 
@@ -200,5 +200,5 @@ void buf_reset (Buf buf)
 // debugging utility
 void buf_print (const Buf buf)
 {
-    printf ("Buf %d/%d '%s'\n", buf_len(buf), buf_cap(buf), buf_data(buf));
+    printf ("Buf %zu/%zu '%s'\n", buf_len(buf), buf_cap(buf), buf_data(buf));
 }

@@ -71,14 +71,14 @@ int main()
 
     buf = buf_new(cap);
     rc = buf_write (buf, foo);
-    assert (rc = strlen(foo));
+    assert (rc == strlen(foo));
     check (buf, cap, foo);
 
     /**** format write ****/
 
     buf_write (buf, "%s%s%d", foo, bar, i);
     sprintf (cat, "%s%s%d", foo, bar, i);
-    assert (rc = strlen(cat));
+    assert (rc == strlen(cat));
     check (buf, cap, cat);
 
     /**** write too large ****/

@@ -18,7 +18,7 @@
 
 void send(Buf page) 
 { 
-	printf ("--- PAGE [%d/%dB] ---\n\n%s\n", buf_len(page), PAGE_SZ, buf_data(page)); 
+	printf ("--- PAGE [%zu/%dB] ---\n\n%s\n", buf_len(page), PAGE_SZ, buf_data(page)); 
 }
 
 int main()
