@@ -1,3 +1,5 @@
+**FROZEN** - Better project at [Stricks](https://github.com/alcover/stricks)
+
 ![block](assets/block.png)
 
 # Buf
